@@ -1,7 +1,47 @@
-import { Button, Toggle } from "react-daisyui";
+import { useState } from "react";
+import { Button, Toggle, Input } from "react-daisyui";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 
 const PostEngagementBuilderPage = (): JSX.Element => {
+  const [excludeKeywords, setExcludeKeywords] = useState<string[]>([]);
+  const [triggerKeywords, setTriggerKeywords] = useState<string[]>([]);
+
+  const handleSubmitExcludeKeyword = (
+    e: React.FormEvent<HTMLFormElement>,
+  ): void => {
+    e.preventDefault();
+
+    const keyword = e.currentTarget["exclude-keyword"].value;
+    setExcludeKeywords((prev) => [...prev, keyword]);
+
+    // reset form
+    e.currentTarget.reset();
+  };
+
+  const handleRemoveExcludeKeyword = (keyword: string): void => {
+    setExcludeKeywords((prev) =>
+      prev.filter((prevKeyword) => prevKeyword !== keyword),
+    );
+  };
+
+  const handleSubmitTriggerKeyword = (
+    e: React.FormEvent<HTMLFormElement>,
+  ): void => {
+    e.preventDefault();
+
+    const keyword = e.currentTarget["trigger-keyword"].value;
+    setTriggerKeywords((prev) => [...prev, keyword]);
+
+    // reset form
+    e.currentTarget.reset();
+  };
+
+  const handleRemoveTriggerKeyword = (keyword: string): void => {
+    setTriggerKeywords((prev) =>
+      prev.filter((prevKeyword) => prevKeyword !== keyword),
+    );
+  };
+
   return (
     <div className="flex flex-col space-y-8">
       <div className="flex items-center justify-end space-x-4">
@@ -73,9 +113,42 @@ const PostEngagementBuilderPage = (): JSX.Element => {
                     </span>
                     <AiOutlineQuestionCircle className="h-5 w-5" />
                   </div>
-                  <Button className="w-full" color="primary">
-                    Require reaction
-                  </Button>
+                  <div className="flex gap-2 flex-wrap">
+                    {excludeKeywords.map((keyword, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between"
+                      >
+                        <span className="inline-flex items-center px-3 py-2 text-sm text-gray-800 bg-red-50 rounded-full border border-red-200 gap-3">
+                          {keyword}
+                          <button
+                            className="text-red-400"
+                            onClick={() => {
+                              handleRemoveExcludeKeyword(keyword);
+                            }}
+                          >
+                            ×
+                          </button>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <form onSubmit={handleSubmitExcludeKeyword}>
+                    <div className="relative">
+                      <Input
+                        className="w-full pr-32"
+                        name="exclude-keyword"
+                        required
+                      />
+                      <Button
+                        type="submit"
+                        color="primary"
+                        className="absolute top-0 right-0 rounded-l-none"
+                      >
+                        Add keyword
+                      </Button>
+                    </div>
+                  </form>
                 </div>
 
                 {/* Only Trigger For Comments With These Keywords */}
@@ -86,9 +159,42 @@ const PostEngagementBuilderPage = (): JSX.Element => {
                     </span>
                     <AiOutlineQuestionCircle className="h-5 w-5" />
                   </div>
-                  <Button className="w-full" color="primary">
-                    Require reaction
-                  </Button>
+                  <div className="flex gap-2 flex-wrap">
+                    {triggerKeywords.map((keyword, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between"
+                      >
+                        <span className="inline-flex items-center px-3 py-2 text-sm text-gray-800 bg-green-50 rounded-full border border-green-200 gap-3">
+                          {keyword}
+                          <button
+                            className="text-green-400"
+                            onClick={() => {
+                              handleRemoveTriggerKeyword(keyword);
+                            }}
+                          >
+                            ×
+                          </button>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <form onSubmit={handleSubmitTriggerKeyword}>
+                    <div className="relative">
+                      <Input
+                        className="w-full pr-32"
+                        name="trigger-keyword"
+                        required
+                      />
+                      <Button
+                        type="submit"
+                        color="primary"
+                        className="absolute top-0 right-0 rounded-l-none"
+                      >
+                        Add keyword
+                      </Button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
