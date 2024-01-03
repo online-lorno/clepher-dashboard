@@ -1,9 +1,9 @@
-import { PostEngagementPlatform } from "@/redux/post-engagement/postEnagementState";
+import { Platform } from "@/redux/post-engagement/postEnagementState";
 import * as z from "zod";
 
 export const postEngagementCreateSchema = z.object({
   name: z.string().min(1),
-  platform: z.nativeEnum(PostEngagementPlatform),
+  platform: z.nativeEnum(Platform),
 });
 
 export type FormDataCreatePostEngagement = z.infer<

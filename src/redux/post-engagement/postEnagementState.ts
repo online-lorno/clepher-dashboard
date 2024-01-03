@@ -1,11 +1,23 @@
-export enum PostEngagementPlatform {
+export enum Platform {
   MESSENGER = "messenger",
+}
+
+export enum ReactionEmoji {
+  LIKE = "👍",
+  LOVE = "❤️",
+  CARE = "😍",
+  HAHA = "😆",
+  WOW = "😮",
+  SAD = "😢",
+  ANGRY = "😡",
 }
 
 export interface PostEngagement {
   id: string;
   name: string;
-  platform: PostEngagementPlatform;
+  platform: Platform;
+  exclude_keywords?: string[];
+  trigger_keywords?: string[];
 }
 
 export interface PostEngagementState {

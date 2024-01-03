@@ -1,6 +1,6 @@
 import {
   type PostEngagement,
-  PostEngagementPlatform,
+  Platform,
 } from "@/redux/post-engagement/postEnagementState";
 import { Button, Checkbox, Table, Tooltip } from "react-daisyui";
 import { FaEdit } from "react-icons/fa";
@@ -45,8 +45,7 @@ const PostEngagementTable = ({
               <span>{postEngagement.name}</span>
               <span>
                 <div className="h-4 w-4">
-                  {postEngagement.platform ===
-                    PostEngagementPlatform.MESSENGER && (
+                  {postEngagement.platform === Platform.MESSENGER && (
                     <img src="/images/icon-messenger.svg" alt="messenger-svg" />
                   )}
                 </div>

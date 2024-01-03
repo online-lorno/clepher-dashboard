@@ -3,7 +3,7 @@ import {
   type FormDataCreatePostEngagement,
   postEngagementCreateSchema,
 } from "@/pages/capture-tools/schema";
-import { PostEngagementPlatform } from "@/redux/post-engagement/postEnagementState";
+import { Platform } from "@/redux/post-engagement/postEnagementState";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input, Modal, Select } from "react-daisyui";
 import { type DialogProps } from "react-daisyui/dist/Modal";
@@ -30,7 +30,7 @@ const PostEnagementCreateModal = ({
     resolver: zodResolver(postEngagementCreateSchema),
     defaultValues: {
       name: "",
-      platform: PostEngagementPlatform.MESSENGER,
+      platform: Platform.MESSENGER,
     },
   });
 
@@ -71,7 +71,7 @@ const PostEnagementCreateModal = ({
                 control={form.control}
                 render={({ field }) => (
                   <Select {...field}>
-                    {Object.values(PostEngagementPlatform).map((value) => {
+                    {Object.values(Platform).map((value) => {
                       const platformName =
                         value.charAt(0).toUpperCase() + value.slice(1);
                       return (
