@@ -29,6 +29,9 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.3",
     "@reduxjs/toolkit": "^2.0.1",
+    "@tanstack/match-sorter-utils": "^8.11.3",
+    "@tanstack/react-table": "^8.11.3",
+    "@tanstack/table-core": "^8.11.3",
     "clsx": "^2.0.0",
     "i18next": "^23.4.1",
     "i18next-browser-languagedetector": "^7.1.0",

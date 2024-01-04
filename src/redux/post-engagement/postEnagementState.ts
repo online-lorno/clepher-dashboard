@@ -1,3 +1,5 @@
+import defaultPostEngagementsJson from "@/constants/post-engagement.json";
+
 export enum Platform {
   MESSENGER = "messenger",
 }
@@ -24,11 +26,16 @@ export interface PostEngagementState {
   postEngagements: PostEngagement[];
 }
 
+const defaultPostEngaments = defaultPostEngagementsJson as PostEngagement[];
 export const PostEngagementInitialState = (): PostEngagementState => {
+  let postEngagements;
   const jsonPostEngagements = localStorage.getItem("clepher-post-engagements");
+
+  if (jsonPostEngagements) {
+    postEngagements = JSON.parse(jsonPostEngagements) as PostEngagement[];
+  }
+
   return {
-    postEngagements: jsonPostEngagements
-      ? (JSON.parse(jsonPostEngagements) as PostEngagement[])
-      : [],
+    postEngagements: postEngagements ?? defaultPostEngaments,
   };
 };

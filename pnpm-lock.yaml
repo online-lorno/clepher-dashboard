@@ -11,6 +11,15 @@ dependencies:
   '@reduxjs/toolkit':
     specifier: ^2.0.1
     version: 2.0.1(react-redux@9.0.4)(react@18.2.0)
+  '@tanstack/match-sorter-utils':
+    specifier: ^8.11.3
+    version: 8.11.3
+  '@tanstack/react-table':
+    specifier: ^8.11.3
+    version: 8.11.3(react-dom@18.2.0)(react@18.2.0)
+  '@tanstack/table-core':
+    specifier: ^8.11.3
+    version: 8.11.3
   clsx:
     specifier: ^2.0.0
     version: 2.1.0
@@ -1099,6 +1108,30 @@ packages:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.0
     dev: true
+
+  /@tanstack/match-sorter-utils@8.11.3:
+    resolution: {integrity: sha512-2XVYTN6fLFyeIPywDL/HGKIQce3V6oUch1FHweGwxruPKEXip6Z9qg+zWZwNE26WG6CktqJh6NqTq90a42jeEw==}
+    engines: {node: '>=12'}
+    dependencies:
+      remove-accents: 0.4.2
+    dev: false
+
+  /@tanstack/react-table@8.11.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Gwwm7po1MaObBguw69L+UiACkaj+eOtThQEArj/3fmUwMPiWaJcXvNG2X5Te5z2hg0HMx8h0T0Q7p5YmQlTUfw==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@tanstack/table-core': 8.11.3
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@tanstack/table-core@8.11.3:
+    resolution: {integrity: sha512-nkcFIL696wTf1QMvhGR7dEg60OIRwEZm1OqFTYYDTRc4JOWspgrsJO3IennsOJ7ptumHWLDjV8e5BjPkZcSZAQ==}
+    engines: {node: '>=12'}
+    dev: false
 
   /@transmart/cli@0.2.4(@types/node@20.10.6)(typescript@5.3.3):
     resolution: {integrity: sha512-Qw3jm2VSQuyp3h+DhK5YSNHW8+pTalRqC9Hetzbc3hy2ZfELFsIYS03kXIu7wnvrehaUzXem4ZMsKnCWqhQM/A==}
@@ -4260,6 +4293,10 @@ packages:
       define-properties: 1.2.1
       set-function-name: 2.0.1
     dev: true
+
+  /remove-accents@0.4.2:
+    resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
+    dev: false
 
   /require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
