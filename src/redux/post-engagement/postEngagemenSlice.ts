@@ -3,6 +3,7 @@ import {
   createPostEngagement,
   deletePostEngagement,
   renamePostEngagement,
+  bulkDeletePostEngagements,
 } from "@/redux/post-engagement/postEngagementReducer";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -13,6 +14,7 @@ const postEngagementSlice = createSlice({
     createPostEngagement,
     deletePostEngagement,
     renamePostEngagement,
+    bulkDeletePostEngagements,
   },
 });
 

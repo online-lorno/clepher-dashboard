@@ -2,6 +2,7 @@
 import PostEnagementCreateModal from "@/components/pages/capture-tools/PostEnagementCreateModal";
 import PostEnagementDeleteModal from "@/components/pages/capture-tools/PostEnagementDeleteModal";
 import PostEnagementRenameModal from "@/components/pages/capture-tools/PostEnagementRenameModal";
+import PostEnagementBulkDeleteModal from "@/components/pages/capture-tools/PostEnagementBulkDeleteModal";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { type PostEngagement } from "@/redux/post-engagement/postEnagementState";
 import { postEngagementActions } from "@/redux/post-engagement/postEngagemenSlice";
@@ -27,8 +28,14 @@ const PostEngagementPage = (): JSX.Element => {
     Modal.useDialog();
   const { Dialog: DialogDelete, handleShow: handleShowDelete } =
     Modal.useDialog();
+  const { Dialog: DialogBulkDelete, handleShow: handleShowBulkDelete } =
+    Modal.useDialog();
   const [selectedPostEngagement, setSelectedPostEngagement] =
     useState<PostEngagement>();
+  const [bulkPostEngagements, setBulkPostEngagements] = useState<
+    PostEngagement[]
+  >([]);
+  const [resetBulkSelection, setResetBulkSelection] = useState(false);
 
   const handleCreateSubmit = (values: FormDataCreatePostEngagement): void => {
     dispatch(
@@ -67,6 +74,23 @@ const PostEngagementPage = (): JSX.Element => {
     }
   };
 
+  const handleBulkDeleteInit = (postEngagements: PostEngagement[]): void => {
+    setBulkPostEngagements(postEngagements);
+    setTimeout(() => {
+      handleShowBulkDelete();
+    }, 100);
+  };
+
+  const handleBulkDeleteSubmit = (): void => {
+    if (bulkPostEngagements.length > 0) {
+      dispatch(
+        postEngagementActions.bulkDeletePostEngagements(bulkPostEngagements),
+      );
+      setBulkPostEngagements([]);
+      setResetBulkSelection(true);
+    }
+  };
+
   return (
     <>
       <DataTable
@@ -75,6 +99,9 @@ const PostEngagementPage = (): JSX.Element => {
         handleShowCreate={handleShowCreate}
         handleRenameInit={handleRenameInit}
         handleDeleteInit={handleDeleteInit}
+        handleBulkDeleteInit={handleBulkDeleteInit}
+        resetBulkSelection={resetBulkSelection}
+        setResetBulkSelection={setResetBulkSelection}
       />
       <PostEnagementCreateModal
         DialogCreate={DialogCreate}
@@ -89,6 +116,11 @@ const PostEngagementPage = (): JSX.Element => {
         DialogDelete={DialogDelete}
         handleDeleteSubmit={handleDeleteSubmit}
         postEngagement={selectedPostEngagement}
+      />
+      <PostEnagementBulkDeleteModal
+        DialogBulkDelete={DialogBulkDelete}
+        handleBulkDeleteSubmit={handleBulkDeleteSubmit}
+        postEngagements={bulkPostEngagements}
       />
     </>
   );

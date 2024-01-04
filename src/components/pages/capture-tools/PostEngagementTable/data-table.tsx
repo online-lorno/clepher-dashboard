@@ -9,14 +9,15 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState, Fragment } from "react";
-import { Button, Input, Join, Table, Tooltip } from "react-daisyui";
+import { useState, Fragment, useEffect } from "react";
+import { Button, Dropdown, Input, Join, Table, Tooltip } from "react-daisyui";
 import {
   FaEdit,
   FaBackward,
   FaChevronLeft,
   FaChevronRight,
   FaForward,
+  FaCaretDown,
 } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 import { IoText, IoTrash } from "react-icons/io5";
@@ -37,6 +38,9 @@ interface DataTableProps<TData, TValue> {
   handleShowCreate: () => void;
   handleRenameInit: (postEngagement: PostEngagement) => void;
   handleDeleteInit: (postEngagement: PostEngagement) => void;
+  handleBulkDeleteInit: (postEngagements: PostEngagement[]) => void;
+  resetBulkSelection: boolean;
+  setResetBulkSelection: (bool: boolean) => void;
 }
 
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
@@ -58,6 +62,9 @@ export function DataTable<TData, TValue>({
   handleShowCreate,
   handleRenameInit,
   handleDeleteInit,
+  handleBulkDeleteInit,
+  resetBulkSelection,
+  setResetBulkSelection,
 }: DataTableProps<TData, TValue>): JSX.Element {
   const [globalFilter, setGlobalFilter] = useState("");
 
@@ -86,8 +93,16 @@ export function DataTable<TData, TValue>({
     enableHiding: true,
   });
 
+  // Reset bulk selection
+  useEffect(() => {
+    if (resetBulkSelection) {
+      table.resetRowSelection();
+      setResetBulkSelection(false);
+    }
+  }, [resetBulkSelection]);
+
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       <div className="flex justify-between">
         <span className="text-xl">Post Engagement Manager</span>
         <div className="flex space-x-2">
@@ -114,6 +129,27 @@ export function DataTable<TData, TValue>({
           >
             Create New
           </Button>
+          <Dropdown end className="hidden pr-3 md:block z-10">
+            <Dropdown.Toggle button={false}>
+              <Button size="sm" variant="outline" color="ghost">
+                Bulk Actions
+                <FaCaretDown className="h-4 w-4" />
+              </Button>
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu className="menu-compact mt-3 w-52">
+              <Dropdown.Item
+                onClick={() => {
+                  const postEngagements = data.filter((_, index) => {
+                    return table.getState().rowSelection[index];
+                  });
+                  handleBulkDeleteInit(postEngagements as PostEngagement[]);
+                }}
+              >
+                Delete
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
       </div>
       <div className="overflow-y-hidden overflow-x-scroll md:overflow-hidden">

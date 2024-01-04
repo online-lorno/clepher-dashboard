@@ -30,7 +30,6 @@ export const columns: Array<ColumnDef<PostEngagement>> = [
         onChange={(e) => {
           const checked = e.target.checked;
           row.toggleSelected(!!checked);
-          console.log("checked: ", checked, row.getValue("id"));
         }}
         aria-label="Select row"
       />

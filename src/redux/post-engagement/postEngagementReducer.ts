@@ -44,3 +44,13 @@ export const deletePostEngagement: CaseReducer<
 
   saveToLocalStorage(state);
 };
+
+export const bulkDeletePostEngagements: CaseReducer<
+  PostEngagementState,
+  PayloadAction<PostEngagement[]>
+> = (state, action) => {
+  state.postEngagements = state.postEngagements.filter(
+    (postEngagement) =>
+      !action.payload.some((pe) => pe.id === postEngagement.id),
+  );
+};
