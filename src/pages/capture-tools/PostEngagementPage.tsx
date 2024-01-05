@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { type PostEngagement } from "@/redux/post-engagement/postEnagementState";
 import { postEngagementActions } from "@/redux/post-engagement/postEngagemenSlice";
 import { getPostEngagements } from "@/redux/post-engagement/postEngagementSelector";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Modal } from "react-daisyui";
 import {
   DataTable,
@@ -36,6 +36,9 @@ const PostEngagementPage = (): JSX.Element => {
     PostEngagement[]
   >([]);
   const [resetBulkSelection, setResetBulkSelection] = useState(false);
+  const [modalAction, setModalAction] = useState<
+    "rename" | "delete" | "bulkdelete"
+  >();
 
   const handleCreateSubmit = useCallback(
     (values: FormDataCreatePostEngagement): void => {
@@ -52,9 +55,7 @@ const PostEngagementPage = (): JSX.Element => {
   const handleRenameInit = useCallback(
     (postEngagement: PostEngagement): void => {
       setSelectedPostEngagement(postEngagement);
-      setTimeout(() => {
-        handleShowRename();
-      }, 100);
+      setModalAction("rename");
     },
     [],
   );
@@ -63,6 +64,7 @@ const PostEngagementPage = (): JSX.Element => {
     (values: FormDataRenamePostEngagement): void => {
       dispatch(postEngagementActions.renamePostEngagement(values));
       setSelectedPostEngagement(undefined);
+      setModalAction(undefined);
     },
     [],
   );
@@ -70,27 +72,25 @@ const PostEngagementPage = (): JSX.Element => {
   const handleDeleteInit = useCallback(
     (postEngagement: PostEngagement): void => {
       setSelectedPostEngagement(postEngagement);
-      setTimeout(() => {
-        handleShowDelete();
-      }, 100);
+      setModalAction("delete");
     },
     [],
   );
+
   const handleDeleteSubmit = useCallback((): void => {
     if (selectedPostEngagement) {
       dispatch(
         postEngagementActions.deletePostEngagement(selectedPostEngagement),
       );
       setSelectedPostEngagement(undefined);
+      setModalAction(undefined);
     }
   }, [selectedPostEngagement]);
 
   const handleBulkDeleteInit = useCallback(
     (postEngagements: PostEngagement[]): void => {
       setBulkPostEngagements(postEngagements);
-      setTimeout(() => {
-        handleShowBulkDelete();
-      }, 100);
+      setModalAction("bulkdelete");
     },
     [],
   );
@@ -102,8 +102,25 @@ const PostEngagementPage = (): JSX.Element => {
       );
       setBulkPostEngagements([]);
       setResetBulkSelection(true);
+      setModalAction(undefined);
     }
   }, [bulkPostEngagements]);
+
+  useEffect(() => {
+    if (modalAction) {
+      switch (modalAction) {
+        case "rename":
+          handleShowRename();
+          break;
+        case "delete":
+          handleShowDelete();
+          break;
+        case "bulkdelete":
+          handleShowBulkDelete();
+          break;
+      }
+    }
+  }, [modalAction]);
 
   return (
     <>
