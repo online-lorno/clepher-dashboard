@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { type PostEngagement } from "@/redux/post-engagement/postEnagementState";
 import { postEngagementActions } from "@/redux/post-engagement/postEngagemenSlice";
 import { getPostEngagements } from "@/redux/post-engagement/postEngagementSelector";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Modal } from "react-daisyui";
 import {
   DataTable,
@@ -37,51 +37,65 @@ const PostEngagementPage = (): JSX.Element => {
   >([]);
   const [resetBulkSelection, setResetBulkSelection] = useState(false);
 
-  const handleCreateSubmit = (values: FormDataCreatePostEngagement): void => {
-    dispatch(
-      postEngagementActions.createPostEngagement({
-        id: Date.now().toString(),
-        ...values,
-      }),
-    );
-  };
+  const handleCreateSubmit = useCallback(
+    (values: FormDataCreatePostEngagement): void => {
+      dispatch(
+        postEngagementActions.createPostEngagement({
+          id: Date.now().toString(),
+          ...values,
+        }),
+      );
+    },
+    [],
+  );
 
-  const handleRenameInit = (postEngagement: PostEngagement): void => {
-    setSelectedPostEngagement(postEngagement);
-    setTimeout(() => {
-      handleShowRename();
-    }, 100);
-  };
+  const handleRenameInit = useCallback(
+    (postEngagement: PostEngagement): void => {
+      setSelectedPostEngagement(postEngagement);
+      setTimeout(() => {
+        handleShowRename();
+      }, 100);
+    },
+    [],
+  );
 
-  const handleRenameSubmit = (values: FormDataRenamePostEngagement): void => {
-    dispatch(postEngagementActions.renamePostEngagement(values));
-    setSelectedPostEngagement(undefined);
-  };
+  const handleRenameSubmit = useCallback(
+    (values: FormDataRenamePostEngagement): void => {
+      dispatch(postEngagementActions.renamePostEngagement(values));
+      setSelectedPostEngagement(undefined);
+    },
+    [],
+  );
 
-  const handleDeleteInit = (postEngagement: PostEngagement): void => {
-    setSelectedPostEngagement(postEngagement);
-    setTimeout(() => {
-      handleShowDelete();
-    }, 100);
-  };
-
-  const handleDeleteSubmit = (): void => {
+  const handleDeleteInit = useCallback(
+    (postEngagement: PostEngagement): void => {
+      setSelectedPostEngagement(postEngagement);
+      setTimeout(() => {
+        handleShowDelete();
+      }, 100);
+    },
+    [],
+  );
+  const handleDeleteSubmit = useCallback((): void => {
     if (selectedPostEngagement) {
       dispatch(
         postEngagementActions.deletePostEngagement(selectedPostEngagement),
       );
       setSelectedPostEngagement(undefined);
     }
-  };
+  }, [selectedPostEngagement]);
 
-  const handleBulkDeleteInit = (postEngagements: PostEngagement[]): void => {
-    setBulkPostEngagements(postEngagements);
-    setTimeout(() => {
-      handleShowBulkDelete();
-    }, 100);
-  };
+  const handleBulkDeleteInit = useCallback(
+    (postEngagements: PostEngagement[]): void => {
+      setBulkPostEngagements(postEngagements);
+      setTimeout(() => {
+        handleShowBulkDelete();
+      }, 100);
+    },
+    [],
+  );
 
-  const handleBulkDeleteSubmit = (): void => {
+  const handleBulkDeleteSubmit = useCallback((): void => {
     if (bulkPostEngagements.length > 0) {
       dispatch(
         postEngagementActions.bulkDeletePostEngagements(bulkPostEngagements),
@@ -89,7 +103,7 @@ const PostEngagementPage = (): JSX.Element => {
       setBulkPostEngagements([]);
       setResetBulkSelection(true);
     }
-  };
+  }, [bulkPostEngagements]);
 
   return (
     <>
